@@ -131,7 +131,7 @@ shopkeeper-agent/
 ### 2. 克隆项目
 
 ```bash
-git clone https://github.com/didilili/shopkeeper-agent.git
+git clone https://github.com/Turbulence123/shopkeeper-agent.git
 cd shopkeeper-agent
 ```
 
@@ -153,13 +153,13 @@ cp .env.example .env
 LLM_API_KEY=your_real_api_key
 ```
 
-默认配置使用兼容 OpenAI 接口的硅基流动服务：
+默认配置使用兼容 OpenAI 接口的 DeepSeek 服务：
 
 ```yaml
 llm:
-    model_name: Pro/zai-org/GLM-5.1
+    model_name: deepseek-v4-flash
     api_key: ${oc.env:LLM_API_KEY}
-    base_url: https://api.siliconflow.cn/v1
+    base_url: https://api.deepseek.com
 ```
 
 如需使用其他兼容 OpenAI API 的模型平台，修改 [conf/app_config.yaml](conf/app_config.yaml) 中的 `model_name` 和 `base_url`。
@@ -184,7 +184,7 @@ docker compose -f docker/docker-compose.yaml up -d
 
 | 服务          | 端口   |
 | ------------- | ------ |
-| MySQL         | `3306` |
+| MySQL         | `3307` |
 | Elasticsearch | `9200` |
 | Kibana        | `5601` |
 | Qdrant        | `6333` |
@@ -272,16 +272,13 @@ VITE_DEV_PROXY_TARGET=http://127.0.0.1:8000
 | 16   | [查询接口实现与依赖组装](https://didilili.github.io/ai-agents-from-zero/#/%E5%AE%9E%E6%88%98%E9%A1%B9%E7%9B%AE-%E7%94%B5%E5%95%86%E9%97%AE%E6%95%B0/16-%E6%9F%A5%E8%AF%A2%E6%8E%A5%E5%8F%A3%E5%AE%9E%E7%8E%B0%E4%B8%8E%E4%BE%9D%E8%B5%96%E7%BB%84%E8%A3%85)                       | QueryService、依赖注入和应用生命周期资源管理                             | `16-api-query-service`             |
 | 17   | [前后端联调与日志追踪](https://didilili.github.io/ai-agents-from-zero/#/%E5%AE%9E%E6%88%98%E9%A1%B9%E7%9B%AE-%E7%94%B5%E5%95%86%E9%97%AE%E6%95%B0/17-%E5%89%8D%E5%90%8E%E7%AB%AF%E8%81%94%E8%B0%83%E4%B8%8E%E6%97%A5%E5%BF%97%E8%BF%BD%E8%B8%AA)                                  | SSE 消息协议、前端展示、异常兜底和 request_id 日志追踪                   | `17-api-integration-logging`       |
 
-可以用分支切换对照每一阶段的代码演进：
+每一阶段的代码演进按章节分支对照（章节分支保留在原教程仓库 [didilili/shopkeeper-agent](https://github.com/didilili/shopkeeper-agent)，本仓库只保留 `main` 完整闭环版本）：
 
 ```bash
-git checkout 04-structure-config
-git checkout main
+git remote add upstream https://github.com/didilili/shopkeeper-agent.git
+git fetch upstream
+git checkout -b 04-structure-config upstream/04-structure-config
 ```
-
-`main` 分支保留当前完整闭环版本。
-
-> 本项目基于尚硅谷「大模型智能体掌柜问数」项目，并在此基础上整理完善。
 
 ## 🚧 能力边界
 
@@ -296,3 +293,10 @@ git checkout main
 - 更复杂的多轮问数记忆、追问改写和会话管理
 
 这些能力适合在基础流程跑通之后继续扩展。`shopkeeper-agent` 更适合承担一个清晰角色：先把智能问数最关键、最必要、最值得学习的工程链路讲清楚、跑起来，并为后续扩展企业级能力打基础。
+
+## 🙏 出处
+
+本项目基于 [didilili/shopkeeper-agent](https://github.com/didilili/shopkeeper-agent) 的教程项目学习、改造而来，版权归原作者所有。
+
+本仓库在原教程基础上，把本地开发环境的 MySQL 端口调整为 `3307`（避免与本机已有的 3306 冲突，`docker/docker-compose.yaml` 与 `conf/app_config.yaml` 已同步），并把默认接入的模型切换到 DeepSeek。
+

@@ -59,3 +59,15 @@ Thumbs.db
 
 # Local TEI embedding model files (large)
 docker/embedding/
+
+# Runtime logs
+/logs/
+*.log
+
+# Agent hook state / scan artifacts (machine-local)
+.mimosa/
+frontend/.mimosa/
+
+# Local tool caches
+.ruff_cache/
+.pytest_cache/
